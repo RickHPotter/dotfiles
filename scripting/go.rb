@@ -9,11 +9,11 @@ module Scripting
     end
 
     def run
-      go = "go1.22.3.linux-amd64.tar.gz"
-      link = "https://go.dev/dl/#{go}"
+      file = "go1.22.3.linux-amd64.tar.gz"
+      link = "https://go.dev/dl/#{file}"
       rm_rf("/usr/local/go")
       download(link)
-      bash("sudo tar -C /usr/local -xzf #{go}")
+      bash("sudo tar -C /usr/local -xzf #{file}")
     end
   end
 end
