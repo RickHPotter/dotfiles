@@ -11,16 +11,8 @@ module Scripting
     def run
       install_oh_my_zsh
       install_tmux_and_plugins
-
-      install_fonts
-      install_themes
-
-      install_neovim
       install_lazygit
-      install_hazyvim
-      prepare_hazyvim_for_languages
-
-      add_neovim_to_zhrc
+      install_fonts
     end
 
     protected
@@ -40,19 +32,6 @@ module Scripting
       bash("cp config_files/starship.toml /home/#{current_user}/.config/starship.toml")
     end
 
-    def install_fonts
-      fonts_dir = "/user/share/fonts/"
-      mkdir_p(fonts_dir)
-
-      cp("config_files/fonts/*.{ttf,otf}", fonts_dir)
-      bash("fc-cache -f -v")
-    end
-
-    def install_neovim
-      bash("curl -LO https://github.com/neovim/neovim/releases/download/stable/nvim-linux64.tar.gz")
-      bash("tar -xf nvim-linux64.tar.gz && mv nvim-linux64 /home/#{current_user}/nvim")
-    end
-
     def install_lazygit
       lazygit_git = "https://api.github.com/repos/jesseduffield/lazygit/releases/latest"
       version = `curl -s "#{lazygit_git}" | grep -Po '"tag_name": "v\\K[^"]*'`.strip
@@ -62,13 +41,12 @@ module Scripting
       bash("sudo install lazygit /usr/local/bin")
     end
 
-    def install_hazyvim
-      mkdir_p("~/.config/nvim")
-      git_clone("RickHPotter/hazyvim.nvim", "~/.config/nvim")
-    end
+    def install_fonts
+      fonts_dir = "/user/share/fonts/"
+      mkdir_p(fonts_dir)
 
-    def prepare_hazyvim_for_languages
-      bash("gem install solargraph:0.50.0 rubocop:1.59.0 neovim:0.9.1 bundler:2.5.3")
+      cp("config_files/fonts/*.{ttf,otf}", fonts_dir)
+      bash("fc-cache -f -v")
     end
   end
 end

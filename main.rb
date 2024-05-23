@@ -8,6 +8,7 @@ require_relative "scripting/oracle"
 require_relative "scripting/go"
 require_relative "scripting/flutter"
 require_relative "scripting/rust"
+require_relative "scripting/nvim"
 require_relative "scripting/zshrc"
 
 Scripting::Terminal.run
@@ -18,4 +19,5 @@ Scripting::Oracle.run
 Scripting::Go.run
 Scripting::Flutter.run
 Scripting::Rust.run
+Scripting::Nvim.run
 Scripting::Zshrc.run
