@@ -1,0 +1,91 @@
+# ~/.config/starship.toml
+
+add_newline = false
+command_timeout = 1000
+format = """$os$username$hostname$directory$git_branch$git_status$ruby$elixir"""
+
+# Drop ugly default prompt characters
+[character]
+success_symbol = ''
+error_symbol = ''
+
+# ---
+
+[os]
+format = '[$symbol](bold white) '
+disabled = false
+
+[os.symbols]
+Windows = ''
+Arch = '󰣇'
+Ubuntu = ''
+Macos = '󰀵'
+
+# ---
+
+# Shows the username
+[username]
+style_user = 'white bold'
+style_root = 'black bold'
+format = '[$user]($style) '
+disabled = true
+show_always = true
+
+# Shows the hostname
+[hostname]
+ssh_only = false
+format = "[$hostname's Playground](bold yellow) [](bold green) "
+disabled = false
+
+# Shows current directory
+[directory]
+truncation_length = 1
+truncation_symbol = '…/'
+home_symbol = '󰋜 ~'
+read_only_style = '197'
+read_only = '  '
+format = 'at [$path]($style)[$read_only]($read_only_style) '
+
+# Shows current git branch
+[git_branch]
+symbol = ' '
+format = 'on [$symbol$branch]($style)'
+style = 'bold green'
+
+# Shows current git status
+[git_status]
+format = '[$all_status$ahead_behind]($style) '
+modified = '[ ](bold fg:#ff9900)'
+staged = '[ ](blue)'
+untracked = '[ ](red)'
+up_to_date = ' '
+
+style = 'bold green'
+conflicted = ' 🏳'
+ahead = ' ⇡${count}'
+behind = ' ⇣${count}'
+diverged = ' 😵'
+stashed = ' 📦'
+renamed = ' 襁 '
+deleted = '  '
+
+# ---
+
+[docker_context]
+disabled = true
+
+[helm]
+disabled = true
+
+[elixir]
+format = 'via [ $version]($style) '
+disabled = false
+
+[nodejs]
+format = 'via [󱃾 $version](yellow) '
+disabled = false
+
+[ruby]
+symbol = ""
+format = 'with [$symbol $version]($style)(bold purple) '
+disabled = false
