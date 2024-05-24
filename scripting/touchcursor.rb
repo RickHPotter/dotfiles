@@ -9,7 +9,6 @@ module Scripting
     end
 
     def run
-      remove_previous_installation
       install_touchcursor
       copy_config_file
       restart_service
@@ -17,30 +16,33 @@ module Scripting
 
     protected
 
-    def remove_previous_installation
-      bash("sudo systemctl stop touchcursor.service")
-      bash("sudo systemctl disable touchcursor.service")
-      bash("sudo rm /etc/systemd/system/touchcursor.service")
-      bash("sudo rm -r /etc/touchcursor")
-    end
-
     def install_touchcursor
-      repo_url = "https://github.com/donniebreve/touchcursor-linux.git"
+      repo_url = "donniebreve/touchcursor-linux.git"
+      repo_dir = "/tmp/touchcursor-linux"
 
-      git_clone(repo_url, "/tmp/touchcursor-linux")
-      cd(repo_dir) { bash("make && sudo make install") }
+      rm_rf(repo_dir)
+
+      git_clone(repo_url, repo_dir)
+      cd(repo_dir) do
+        bash("make")
+        bash("make install")
+      end
+
       rm_rf(repo_dir)
     end
 
     def copy_config_file
-      config_dir = "~/.config/touchcursor"
+      config_file = File.join(config_files_dir, "touchcursor.conf")
+      source_folder = "~/.config/touchcursor"
 
-      mkdir_p(config_dir)
-      cp("config/touchcursor.conf", config_dir)
+      mkdir_p(source_folder)
+      cp(config_file, source_folder)
     end
 
     def restart_service
       bash("systemctl --user restart touchcursor.service")
+
+      p "Touchcursor was successfuly installed"
     end
   end
 end

@@ -14,6 +14,10 @@ module Scripting
       rm_rf("/usr/local/go")
       download(link)
       bash("sudo tar -C /usr/local -xzf #{file}")
+
+      rm_rf(file)
+
+      p "Go was successfully installed"
     end
   end
 end

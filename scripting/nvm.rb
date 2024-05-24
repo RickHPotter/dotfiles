@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require_relative "utils"
+require_relative "util"
 
 module Scripting
   class Nvm < Scripting::Util
@@ -11,12 +11,9 @@ module Scripting
     def run
       bash("curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/master/install.sh | bash")
 
-      File.open("/home/#{current_user}/.zshrc", "a") do |f|
-        f.puts 'export NVM_DIR="$HOME/.nvm"'
-        f.puts '[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm'
-      end
+      bash('export NVM_DIR="$HOME/.nvm" && [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" && nvm install node')
 
-      bash("source ~/.zshrc && nvm install node")
+      p "Nvm and Node were successfully installed"
     end
   end
 end

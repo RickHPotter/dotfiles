@@ -9,8 +9,10 @@ module Scripting
     end
 
     def run
+      install_dependencies
       setup_flutter
       setup_android_studio
+      run_android_studio
     end
 
     protected
@@ -18,8 +20,8 @@ module Scripting
     def install_dependencies
       bash("sudo apt-get update -y && sudo apt-get upgrade -y")
       bash("sudo apt-get install -y libglu1-mesa libc6:i386 libncurses5:i386 libstdc++6:i386 lib32z1 libbz2-1.0:i386")
-      bash("sudo apt-get install qemu-kvm libvirt-daemon-system libvirt-clients bridge-utils")
-      bash("sudo apt-get install clang ninja-build libgtk-3-dev -y")
+      bash("sudo apt-get install -y qemu-kvm libvirt-daemon-system libvirt-clients bridge-utils")
+      bash("sudo apt-get install -y clang ninja-build libgtk-3-dev -y")
     end
 
     def setup_flutter
@@ -29,6 +31,10 @@ module Scripting
       download(link)
       bash("sudo tar -xf #{file} -C /usr/bin/")
       bash("echo 'export PATH=\"$HOME/development/flutter/bin:$PATH\"' >> ~/.zshenv")
+
+      rm_rf(file)
+
+      p "Flutter was successfully installed"
     end
 
     def setup_android_studio
@@ -36,13 +42,23 @@ module Scripting
       link = "https://redirector.gvt1.com/edgedl/android/studio/ide-zips/2023.3.1.19/#{file}"
 
       download(link)
-      bash("sudo tar -xf #{file} android-studio -C /usr/bin/")
+      bash("sudo tar -xf #{file} android-studio")
+      mv("android-studio", "/usr/bin/", sudo: true)
+
+      rm_rf(file)
+
+      p "Android Studio was successfully installed"
     end
 
     def run_android_studio
-      cd("/usr/bin/android-studio") do
-        bash("/studio.sh")
+      p "Starting Android Studio... Proceed with GUI installation."
+
+      cd("/usr/bin/android-studio/bin") do
+        bash("./studio.sh")
       end
+
+      p "Android Studio was successfully installed."
+      p "Do not forget to run flutter doctor AFTR installing cmdline-tools components from Android SDK"
     end
   end
 end

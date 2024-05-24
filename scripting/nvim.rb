@@ -1,13 +1,14 @@
 # frozen_string_literal: true
 
+require_relative "util"
+
 module Scripting
-  class Nvim
+  class Nvim < Scripting::Util
     def self.run
       new.run
     end
 
     def run
-      install_neovim
       install_hazyvim
 
       setup_ruby
@@ -17,11 +18,6 @@ module Scripting
     end
 
     protected
-
-    def install_neovim
-      bash("curl -LO https://github.com/neovim/neovim/releases/download/stable/nvim-linux64.tar.gz")
-      bash("tar -xf nvim-linux64.tar.gz && mv nvim-linux64 /home/#{current_user}/nvim")
-    end
 
     def install_hazyvim
       mkdir_p("~/.config/nvim")

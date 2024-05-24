@@ -1,0 +1,6 @@
+[core]
+	editor = nvim
+  sshCommand = ssh -i ~/.ssh/id_ed25519 -F /dev/null
+[user]
+	name = Rick
+	email = luis.bastos@siedos.com.br

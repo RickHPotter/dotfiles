@@ -1,9 +1,10 @@
 # frozen_string_literal: true
 
+require "shellwords"
 require_relative "util"
 
 module Scripting
-  class Terminal < Scipting::Util
+  class Terminal < Scripting::Util
     def self.run
       new.run
     end
@@ -12,41 +13,82 @@ module Scripting
       install_oh_my_zsh
       install_tmux_and_plugins
       install_lazygit
+      install_neovim
       install_fonts
     end
 
-    protected
-
     def install_oh_my_zsh
-      bash('sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"')
+      rm_rf("~/Downloads/ohmyzsh")
+      rm_rf("~/.oh-my-zsh")
+
+      git_clone("ohmyzsh/ohmyzsh.git", "~/Downloads/ohmyzsh")
+      cd("~/Downloads/ohmyzsh") do
+        bash("./tools/install.sh -s -- --yes")
+      end
 
       zsh_config = "${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins"
       git_clone("zsh-users/zsh-syntax-highlighting.git", "#{zsh_config}/zsh-syntax-highlighting")
       git_clone("zsh-users/zsh-autosuggestions.git",     "#{zsh_config}/zsh-autosuggestions")
+
+      rm_rf("~/Downloads/ohmyzsh")
+
+      p "OhMyZsh was successfully installed"
     end
 
     def install_tmux_and_plugins
+      rm_rf("~/.tmux/plugins/tpm")
       git_clone("tmux-plugins/tpm", "~/.tmux/plugins/tpm")
 
-      bash("curl -sS https://starship.rs/install.sh | sh")
-      bash("cp config_files/starship.toml /home/#{current_user}/.config/starship.toml")
+      cp(File.join(config_files_dir, ".tmux.conf"), "~/")
+      cp(File.join(config_files_dir, ".tmux.reset.conf"), "~/")
+
+      bash("curl -sS https://starship.rs/install.sh | sh -s -- --yes")
+
+      cp(File.join(config_files_dir, "starship.toml"), "~/.config/starship.toml")
+
+      p "Tmux, plugins and Starship were successfully installed"
     end
 
     def install_lazygit
       lazygit_git = "https://api.github.com/repos/jesseduffield/lazygit/releases/latest"
       version = `curl -s "#{lazygit_git}" | grep -Po '"tag_name": "v\\K[^"]*'`.strip
 
-      bash("curl -Lo lazygit.tar.gz \"https://github.com/jesseduffield/lazygit/releases/latest/download/lazygit_#{version}_Linux_x86_64.tar.gz\"")
-      bash("tar xf lazygit.tar.gz lazygit")
-      bash("sudo install lazygit /usr/local/bin")
+      cd("~/Downloads") do
+        download("https://github.com/jesseduffield/lazygit/releases/latest/download/lazygit_#{version}_Linux_x86_64.tar.gz", "lazygit.tar.gz")
+        bash("tar xf lazygit.tar.gz lazygit")
+        bash("sudo install lazygit /usr/local/bin")
+      end
+
+      rm_rf("~/Downloads/lazygit.tar.gz")
+      rm_rf("~/Downloads/lazygit")
+
+      p "Lazygit was successfully installed"
+    end
+
+    def install_neovim
+      rm_rf("~/nvim")
+
+      cd("~/Downloads") do
+        download("https://github.com/neovim/neovim/releases/download/stable/nvim-linux64.tar.gz")
+        bash("tar -xf nvim-linux64.tar.gz")
+        mv("nvim-linux64", "~/nvim", sudo: true)
+      end
+
+      rm_rf("~/Downloads/nvim-linux64")
+      rm_rf("~/Downloads/nvim-linux64.tar.gz")
+
+      p "Neovim was successfully installed"
     end
 
     def install_fonts
-      fonts_dir = "/user/share/fonts/"
-      mkdir_p(fonts_dir)
+      fonts_dir = "/usr/share/fonts/"
+      mkdir_p(fonts_dir, sudo: true)
 
-      cp("config_files/fonts/*.{ttf,otf}", fonts_dir)
+      file_paths = Dir.glob(File.join(assets_dir, "fonts", "*.{ttf,otf}")).map { |path| Shellwords.escape(path) }.join(" ")
+      cp(file_paths, fonts_dir, sudo: true)
       bash("fc-cache -f -v")
+
+      p "Fonts were successfully installed"
     end
   end
 end

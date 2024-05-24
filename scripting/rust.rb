@@ -9,7 +9,9 @@ module Scripting
     end
 
     def run
-      bash("curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh")
+      bash("curl -y --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y")
+
+      p "Rust was successfully installed"
     end
   end
 end

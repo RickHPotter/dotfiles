@@ -1,0 +1,14 @@
+[includeIf "gitdir/i:~/projects/"]
+    path = ~/projects/.gitconfig
+
+[includeIf "gitdir/i:~/personal/"]
+    path = ~/personal/.gitconfig
+
+[includeIf "gitdir/i:~/AndroidStudioProjects/"]
+    path = ~/personal/.gitconfig
+
+[includeIf "gitdir/i:~/.config/nvim/"]
+    path = ~/personal/.gitconfig
+
+[push]
+	default = current
