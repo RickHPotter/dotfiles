@@ -18,15 +18,15 @@ module Scripting
     end
 
     def bash(command)
-      puts "Running: #{command}"
+      p "Running: #{command}"
       stdout, stderr, status = Open3.capture3(command)
 
       unless status.success?
-        puts "Error: #{stderr}"
+        p "Error: #{stderr}"
         exit 1
       end
 
-      puts stdout
+      p stdout
     end
 
     def bashs(*commands)

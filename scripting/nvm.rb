@@ -13,7 +13,7 @@ module Scripting
 
       bash('export NVM_DIR="$HOME/.nvm" && [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" && nvm install node')
 
-      p "Nvm and Node were successfully installed"
+      p "Nvm and Node were successfully installed."
     end
   end
 end

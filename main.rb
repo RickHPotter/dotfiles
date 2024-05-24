@@ -30,7 +30,7 @@ end.parse!
 if options[:except_neovim]
   Scripting::Terminal.run
   Scripting::Touchcursor.run
-  # Scripting::Postgresql.run
+  Scripting::Postgresql.run
   Scripting::Oracle.run
 
   Scripting::Nvm.run

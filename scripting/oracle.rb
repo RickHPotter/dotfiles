@@ -20,7 +20,7 @@ module Scripting
         bash("sudo unzip instantclient-sdk-linux.x64-21.12.0.0.0dbru.zip")
       end
 
-      p "Go was successfully installed"
+      p "Go was successfully installed."
     end
   end
 end

@@ -32,7 +32,7 @@ module Scripting
 
       rm_rf("~/Downloads/ohmyzsh")
 
-      p "OhMyZsh was successfully installed"
+      p "OhMyZsh was successfully installed."
     end
 
     def install_tmux_and_plugins
@@ -46,7 +46,7 @@ module Scripting
 
       cp(File.join(config_files_dir, "starship.toml"), "~/.config/starship.toml")
 
-      p "Tmux, plugins and Starship were successfully installed"
+      p "Tmux, plugins and Starship were successfully installed."
     end
 
     def install_lazygit
@@ -62,7 +62,7 @@ module Scripting
       rm_rf("~/Downloads/lazygit.tar.gz")
       rm_rf("~/Downloads/lazygit")
 
-      p "Lazygit was successfully installed"
+      p "Lazygit was successfully installed."
     end
 
     def install_neovim
@@ -77,7 +77,7 @@ module Scripting
       rm_rf("~/Downloads/nvim-linux64")
       rm_rf("~/Downloads/nvim-linux64.tar.gz")
 
-      p "Neovim was successfully installed"
+      p "Neovim was successfully installed."
     end
 
     def install_fonts
@@ -88,7 +88,7 @@ module Scripting
       cp(file_paths, fonts_dir, sudo: true)
       bash("fc-cache -f -v")
 
-      p "Fonts were successfully installed"
+      p "Fonts were successfully installed."
     end
   end
 end

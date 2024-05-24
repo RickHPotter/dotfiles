@@ -17,7 +17,7 @@ module Scripting
 
       rm_rf(file)
 
-      p "Go was successfully installed"
+      p "Go was successfully installed."
     end
   end
 end

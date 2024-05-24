@@ -34,7 +34,7 @@ module Scripting
 
       rm_rf(file)
 
-      p "Flutter was successfully installed"
+      p "Flutter was successfully installed."
     end
 
     def setup_android_studio
@@ -47,7 +47,7 @@ module Scripting
 
       rm_rf(file)
 
-      p "Android Studio was successfully installed"
+      p "Android Studio was successfully installed."
     end
 
     def run_android_studio
@@ -57,7 +57,7 @@ module Scripting
         bash("./studio.sh")
       end
 
-      p "Android Studio was successfully installed."
+      p "Android Studio was successfully installed.."
       p "Do not forget to run flutter doctor AFTR installing cmdline-tools components from Android SDK"
     end
   end
