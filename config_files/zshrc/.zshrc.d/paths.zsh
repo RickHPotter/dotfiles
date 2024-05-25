@@ -8,6 +8,8 @@ export GOBIN=$GOPATH/bin
 export PATH=$PATH:$GOBIN
 export PATH=/usr/local/go/bin:$PATH
 
+export PATH=$PATH:/usr/local/bin/exa/bin
+
 export PATH=/usr/bin/android-studio/bin:$PATH
 export PATH=/usr/bin/flutter/bin:$PATH
 

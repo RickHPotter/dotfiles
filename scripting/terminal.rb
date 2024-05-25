@@ -5,10 +5,6 @@ require_relative "util"
 
 module Scripting
   class Terminal < Scripting::Util
-    def self.run
-      new.run
-    end
-
     def run
       install_oh_my_zsh
       install_tmux_and_plugins
@@ -18,9 +14,13 @@ module Scripting
       install_exa
     end
 
+    protected
+
     def install_oh_my_zsh
-      rm_rf("~/Downloads/ohmyzsh")
+      puts "Installing OhMyZsh...".start
+
       rm_rf("~/.oh-my-zsh")
+      rm_rf("~/.zshrc.pre-oh-my-zsh*")
 
       git_clone("ohmyzsh/ohmyzsh.git", "~/Downloads/ohmyzsh")
       cd("~/Downloads/ohmyzsh") do
@@ -29,24 +29,28 @@ module Scripting
 
       rm_rf("~/Downloads/ohmyzsh")
 
-      p "OhMyZsh was successfully installed."
+      puts "OhMyZsh was successfully installed.".end
     end
 
     def install_tmux_and_plugins
+      puts "Installing Tmux and plugins...".start
+
       rm_rf("~/.tmux/plugins/tpm")
       git_clone("tmux-plugins/tpm", "~/.tmux/plugins/tpm")
 
       cp(File.join(config_files_dir, ".tmux.conf"), "~/")
       cp(File.join(config_files_dir, ".tmux.reset.conf"), "~/")
 
-      bash("curl -sS https://starship.rs/install.sh | sh -s -- --yes")
+      bash("curl -sS https://starship.rs/install.sh | sh -s -- --yes > /dev/null")
 
       cp(File.join(config_files_dir, "starship.toml"), "~/.config/starship.toml")
 
-      p "Tmux, plugins and Starship were successfully installed."
+      puts "Tmux, plugins and Starship were successfully installed.".end
     end
 
     def install_lazygit
+      puts "Installing Lazygit...".start
+
       lazygit_git = "https://api.github.com/repos/jesseduffield/lazygit/releases/latest"
       version = `curl -s "#{lazygit_git}" | grep -Po '"tag_name": "v\\K[^"]*'`.strip
 
@@ -59,10 +63,12 @@ module Scripting
       rm_rf("~/Downloads/lazygit.tar.gz")
       rm_rf("~/Downloads/lazygit")
 
-      p "Lazygit was successfully installed."
+      puts "Lazygit was successfully installed.".end
     end
 
     def install_neovim
+      puts "Installing Neovim...".start
+
       rm_rf("~/nvim")
 
       cd("~/Downloads") do
@@ -74,10 +80,12 @@ module Scripting
       rm_rf("~/Downloads/nvim-linux64")
       rm_rf("~/Downloads/nvim-linux64.tar.gz")
 
-      p "Neovim was successfully installed."
+      puts "Neovim was successfully installed.".end
     end
 
     def install_fonts
+      puts "Installing Fonts...".start
+
       fonts_dir = "/usr/share/fonts/"
       mkdir_p(fonts_dir, sudo: true)
 
@@ -85,17 +93,19 @@ module Scripting
       cp(file_paths, fonts_dir, sudo: true)
       bash("fc-cache -f")
 
-      p "Fonts were successfully installed."
+      puts "Fonts were successfully installed.".end
     end
 
     def install_exa
+      puts "Installing Exa...".start
+
       cd("/usr/local/bin") do
         download("https://github.com/ogham/exa/releases/download/v0.10.0/exa-linux-x86_64-v0.10.0.zip", sudo: true)
-        bash("sudo unzip -o exa-linux-x86_64-v0.10.0.zip")
+        bash("sudo unzip -qq -o exa-linux-x86_64-v0.10.0.zip -d exa")
         rm_rf("exa-linux-x86_64-v0.10.0.zip", sudo: true)
       end
 
-      p "Exa was successfully installed."
+      puts "Exa was successfully installed.".end
     end
   end
 end

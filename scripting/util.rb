@@ -5,10 +5,15 @@ require "open3"
 
 module Scripting
   class Util
-    attr_accessor :current_user, :assets_dir, :config_files_dir
+    attr_reader :assets_dir, :config_files_dir
+
+    def self.run
+      new.run
+    rescue NotImplementedError
+      puts "Error: Run Method not implemented.".error
+    end
 
     def initialize
-      @current_user = ENV["user"]
       current_dir = File.expand_path(__FILE__)
       current_folder = File.dirname(current_dir)
       root_dir = File.dirname(current_folder)
@@ -17,16 +22,15 @@ module Scripting
       @config_files_dir = File.join(root_dir, "config_files")
     end
 
-    def bash(command, custom_message: nil)
-      p "Running: #{custom_message || command}"
-      stdout, stderr, status = Open3.capture3(command)
+    def bash(command)
+      puts "`#{command[0..116]}#{command.length > 117 ? '...' : ''}`".info1
 
-      unless status.success?
-        p "Error: #{stderr}"
-        exit 1
-      end
+      _stdout, stderr, status = Open3.capture3(command)
 
-      p stdout if stdout != ""
+      return if status.success?
+
+      puts "Error: #{stderr}".error
+      exit 1
     end
 
     def bashs(*commands)
@@ -38,43 +42,69 @@ module Scripting
     end
 
     def git_clone(repo, path = "")
-      bash("git clone https://github.com/#{repo} #{path}")
+      bash("git clone --q https://github.com/#{repo} #{path}")
     end
 
-    def download(url, location = "", sudo: false)
-      args = "-LO"
-      args = "-Lo #{location}" if location != ""
+    def download(url, location = nil, sudo: false)
+      commands = [
+        sudo ? "sudo" : "",
+        "curl -L",
+        location ? "-o #{location}" : "-O",
+        "\"#{url}\"",
+        "-s"
+      ]
 
-      bash("#{'sudo' if sudo} curl #{args} \"#{url}\"")
+      bash(commands.join(" "))
     end
 
     def mkdir_p(path, sudo: false)
-      path = File.expand_path(path)
-      return bash("sudo mkdir -p #{path}") if sudo
+      commands = [
+        sudo ? "sudo" : "",
+        "mkdir -p",
+        File.expand_path(path)
+      ]
 
-      FileUtils.mkdir(path) unless File.exist?(path)
+      bash(commands.join(" "))
     end
 
-    def cd(path, &block)
-      Dir.chdir(File.expand_path(path), &block)
+    def cd(path, &)
+      puts "cd into #{path}".info2
+      Dir.chdir(File.expand_path(path), &)
+      puts "cd back #{Dir.pwd}".info2
     end
 
     def rm_rf(path, sudo: false)
-      return bash("sudo rm -rf #{path}") if sudo
+      commands = [
+        sudo ? "sudo" : "",
+        "rm -rf",
+        path
+      ]
 
-      FileUtils.rm_rf(File.expand_path(path))
+      bash(commands.join(" "))
     end
 
     def cp(content, destination_path, sudo: false)
-      return bash("sudo cp -r #{content} #{destination_path}") if sudo
+      commands = [
+        sudo ? "sudo" : "",
+        "cp -r",
+        content,
+        destination_path,
+        "> /dev/null"
+      ]
 
-      FileUtils.cp(File.expand_path(content), File.expand_path(destination_path))
+      bash(commands.join(" "))
     end
 
     def mv(source_path, destination_path, sudo: false)
-      return bash("sudo mv #{source_path} #{destination_path}") if sudo
+      commands = [
+        sudo ? "sudo" : "",
+        "mv",
+        source_path,
+        destination_path,
+        "> /dev/null"
+      ]
 
-      FileUtils.mv(File.expand_path(source_path), File.expand_path(destination_path))
+      bash(commands.join(" "))
     end
   end
 end

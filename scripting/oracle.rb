@@ -4,23 +4,27 @@ require_relative "util"
 
 module Scripting
   class Oracle < Scripting::Util
-    def self.run
-      new.run
+    attr_reader :source_folder
+
+    def initialize
+      @source_folder = "/opt/oracle"
+      super
     end
 
     def run
-      rm_rf("/opt/oracle", sudo: true)
+      puts "Installing Oracle...".start
 
-      mkdir_p("/opt/oracle", sudo: true)
+      rm_rf(source_folder, sudo: true)
+      mkdir_p(source_folder, sudo: true)
 
-      cd("/opt/oracle") do
+      cd(source_folder) do
         download("https://download.oracle.com/otn_software/linux/instantclient/2112000/instantclient-basic-linux.x64-21.12.0.0.0dbru.zip", sudo: true)
         download("https://download.oracle.com/otn_software/linux/instantclient/2112000/instantclient-sdk-linux.x64-21.12.0.0.0dbru.zip", sudo: true)
-        bash("sudo unzip instantclient-basic-linux.x64-21.12.0.0.0dbru.zip")
-        bash("sudo unzip instantclient-sdk-linux.x64-21.12.0.0.0dbru.zip")
+        bash("sudo unzip -qq instantclient-basic-linux.x64-21.12.0.0.0dbru.zip")
+        bash("sudo unzip -qq instantclient-sdk-linux.x64-21.12.0.0.0dbru.zip")
       end
 
-      p "Go was successfully installed."
+      puts "Oracle was successfully installed.".end
     end
   end
 end

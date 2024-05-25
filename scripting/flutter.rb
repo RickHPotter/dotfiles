@@ -4,8 +4,14 @@ require_relative "util"
 
 module Scripting
   class Flutter < Scripting::Util
-    def self.run
-      new.run
+    attr_reader :flutter_file, :flutter_link, :android_file, :android_link
+
+    def initialize
+      @flutter_file = "flutter_linux_3.22.1-stable.tar.xz"
+      @flutter_link = "https://storage.googleapis.com/flutter_infra_release/releases/stable/linux/#{flutter_file}"
+      @android_file = "android-studio-2023.3.1.19-linux.tar.gz"
+      @android_link = "https://redirector.gvt1.com/edgedl/android/studio/ide-zips/2023.3.1.19/#{android_file}"
+      super
     end
 
     def run
@@ -18,47 +24,53 @@ module Scripting
     protected
 
     def install_dependencies
+      puts "Installing dependencies for Flutter and Android Studio...".start
+
       bash("sudo apt-get update -qq && sudo apt-get upgrade -qq")
       bash("sudo apt-get install -qq libglu1-mesa libc6:i386 libncurses5:i386 libstdc++6:i386 lib32z1 libbz2-1.0:i386")
       bash("sudo apt-get install -qq qemu-kvm libvirt-daemon-system libvirt-clients bridge-utils")
       bash("sudo apt-get install -qq clang ninja-build libgtk-3-dev")
+
+      puts "Dependencies were successfully installed.".end
     end
 
     def setup_flutter
-      file = "flutter_linux_3.22.1-stable.tar.xz"
-      link = "https://storage.googleapis.com/flutter_infra_release/releases/stable/linux/#{file}"
+      puts "Installing Flutter...".start
 
-      download(link)
-      bash("sudo tar -xf #{file} -C /usr/bin/")
+      rm_rf("/usr/bin/flutter", sudo: true)
+
+      download(flutter_link)
+      bash("sudo tar -xf #{flutter_file} -C /usr/bin/")
       bash("echo 'export PATH=\"$HOME/development/flutter/bin:$PATH\"' >> ~/.zshenv")
 
-      rm_rf(file)
+      rm_rf(flutter_file)
 
-      p "Flutter was successfully installed."
+      puts "Flutter was successfully installed.".end
     end
 
     def setup_android_studio
-      file = "android-studio-2023.3.1.19-linux.tar.gz"
-      link = "https://redirector.gvt1.com/edgedl/android/studio/ide-zips/2023.3.1.19/#{file}"
+      puts "Installing Android Studio...".start
 
-      download(link)
-      bash("sudo tar -xf #{file} android-studio")
+      rm_rf("/usr/bin/android-studio", sudo: true)
+
+      download(android_link)
+      bash("sudo tar -xf #{android_file} android-studio")
       mv("android-studio", "/usr/bin/", sudo: true)
 
-      rm_rf(file)
+      rm_rf(android_file)
 
-      p "Android Studio was successfully installed."
+      puts "Android Studio was successfully installed.".end
     end
 
     def run_android_studio
-      p "Starting Android Studio... Proceed with GUI installation."
+      puts "Starting Android Studio... Proceed with GUI installation.".warning
 
       cd("/usr/bin/android-studio/bin") do
         bash("./studio.sh")
       end
 
-      p "Android Studio was successfully installed.."
-      p "Do not forget to run flutter doctor AFTR installing cmdline-tools components from Android SDK"
+      puts "Android Studio was successfully installed..".end
+      puts "Do NOT forget to run `flutter doctor` AFTER installing cmdline-tools components from Android SDK".warning
     end
   end
 end

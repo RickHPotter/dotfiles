@@ -2,7 +2,7 @@
 
 <!--toc:start-->
 - [Dotfiles Setup Guide](#dotfiles-setup-guide)
-  - [Prerequisites](#prerequisites)
+  - [Warning](#warning)
   - [Prerequisites](#prerequisites)
   - [Step-by-Step Instructions](#step-by-step-instructions)
 <!--toc:end-->

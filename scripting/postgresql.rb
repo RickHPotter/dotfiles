@@ -6,17 +6,27 @@ require_relative "util"
 
 module Scripting
   class Postgresql < Scripting::Util
-    def self.run
-      new.run
+    attr_reader :pg_user, :pg_password, :pg_hba_conf, :pg_hba_conf_backup
+
+    def initialize
+      @pg_user     = "postgres"
+      @pg_password = "postgres"
+      @pg_hba_conf = File.expand_path("/etc/postgresql/12/main/pg_hba.conf")
+      @pg_hba_conf_backup = File.expand_path("#{pg_hba_conf}.bak")
+      super
     end
 
     def run
+      puts "Installing PostgreSQL and creating postgres user with password postgres...".end
+
       install_postgres
       create_postgres_user
       allow_password_authentication
 
-      p "PostgreSQL was successfully installed."
+      puts "PostgreSQL was successfully installed and configured.".end
     end
+
+    protected
 
     def install_postgres
       bash("sudo apt-get update -qq")
@@ -25,11 +35,9 @@ module Scripting
     end
 
     def create_postgres_user
-      pg_user     = "postgres"
-      pg_password = "postgres"
-
       user_exists_command = %(sudo -u postgres psql -tAc "SELECT 1 FROM pg_roles WHERE rolname='#{pg_user}'")
-      stdout, _stderr, status = Open3.capture3(user_exists_command)
+      stdout, stderr, status = Open3.capture3(user_exists_command)
+      raise "Error: #{stderr}" if stderr.strip != ""
 
       if status.success? && stdout.strip == "1"
         update_user_command = %(sudo -u postgres psql -c "ALTER USER #{pg_user} WITH PASSWORD '#{pg_password}';")
@@ -44,19 +52,15 @@ module Scripting
     end
 
     def allow_password_authentication
-      pg_hba_conf = File.expand_path("/etc/postgresql/12/main/pg_hba.conf")
-      pg_hba_conf_backup = File.expand_path("#{pg_hba_conf}.bak")
       bash("sudo cp #{pg_hba_conf} #{pg_hba_conf_backup}")
 
-      existing_content = `sudo cat #{pg_hba_conf}`
-
       Tempfile.open("pg_hba_conf") do |tempfile|
-        tempfile.p existing_content
-        tempfile.p "host    all             all             127.0.0.1/32            md5"
-        tempfile.p "host    all             all             ::1/128                 md5"
+        tempfile.puts `sudo cat #{pg_hba_conf}`
+        tempfile.puts "host    all             all             127.0.0.1/32            md5"
+        tempfile.puts "host    all             all             ::1/128                 md5"
         tempfile.flush
 
-        mv(tempfile.path, "pg_hba_conf", sudo: true)
+        mv(tempfile.path, pg_hba_conf, sudo: true)
         tempfile.unlink
       end
 

@@ -4,22 +4,25 @@ require_relative "util"
 
 module Scripting
   class Zshrc < Scripting::Util
-    def self.run
-      new.run
+    attr_reader :zsh_config
+
+    def initialize
+      @zsh_config = "${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins"
+      super
     end
 
     def run
+      puts "Installing Zshrc plugins and updating config...".start
+
       install_plugins
       update_zshrc_config
 
-      p "Zshrc files have been successfully moved."
+      puts "Zshrc plugins and config were successfully updated.".end
     end
 
     protected
 
     def install_plugins
-      zsh_config = "${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins"
-
       rm_rf("#{zsh_config}/zsh-syntax-highlighting", sudo: true)
       rm_rf("#{zsh_config}/zsh-autosuggestions", sudo: true)
 
@@ -34,12 +37,10 @@ module Scripting
       rm_rf("~/.zshrc")
       rm_rf("~/.zshrc.d")
 
-      cp(File.join(config_files_dir, "zshrc", ".zshrc"), "~/")
-
       mkdir_p("~/.zshrc.d")
-      cp(File.join(config_files_dir, "zshrc", ".zshrc.d", "aliases.zsh"), "~/.zshrc.d/")
-      cp(File.join(config_files_dir, "zshrc", ".zshrc.d", "paths.zsh"),   "~/.zshrc.d/")
-      cp(File.join(config_files_dir, "zshrc", ".zshrc.d", "siedos.zsh"),  "~/.zshrc.d/")
+
+      cp(File.join(config_files_dir, "zshrc", ".zshrc"), "~/")
+      cp(File.join(config_files_dir, "zshrc", ".zshrc.d", "*"), "~/.zshrc.d/")
     end
   end
 end

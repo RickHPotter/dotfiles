@@ -2,6 +2,8 @@
 
 require "optparse"
 
+require_relative "scripting/string_colours"
+
 require_relative "scripting/terminal"
 require_relative "scripting/touchcursor"
 require_relative "scripting/postgresql"
@@ -15,15 +17,15 @@ require_relative "scripting/rust"
 require_relative "scripting/zshrc"
 require_relative "scripting/nvim"
 
-options = { except_neovim: true, only_neovim: false }
+options = { except_neovim: false, only_neovim: false }
 
 OptionParser.new do |opts|
   opts.on("--except-neovim", "Except Neovim // DEFAULT") do
-    options[:skip_nvm] = false
+    options[:except_neovim] = true
   end
 
   opts.on("--only-neovim", "Only Neovim") do
-    options[:skip_go] = true
+    options[:only_neovim] = true
   end
 end.parse!
 
@@ -40,13 +42,18 @@ if options[:except_neovim]
   Scripting::Zshrc.run
 end
 
-Scripting::Nvim.run if options[:only_neovim]
+if options[:only_neovim]
+  Scripting::Nvim.run
 
-p "Things that are missing:"
-p "  - In Ubuntu Terminal Preferences, opt in `Run command as Login Shell` and add the custom command `zsh --login`"
-p "  - Setup Git Keys"
-p "  - Setup Codeium, runninig :Codeium Auth on nvim"
-p "  - Download Opera (personal) and Chrome (AndroidStudio and Capybara)"
-p "  - Download Discord"
-p "  - Download Dbeaver"
-p "  - Download Spotify"
+  puts "".delimiter
+  puts "THINGS THAT ARE MISSING:".warning
+  puts "\
+  - In Ubuntu Terminal Preferences, opt in `Run command as Login Shell` and add the custom command `zsh --login`
+  - Setup Git Keys
+  - Setup Codeium, runninig :Codeium Auth on nvim
+  - Download Opera (personal) and Chrome (AndroidStudio and Capybara)
+  - Download Discord
+  - Download Dbeaver
+  - Download Spotify".info1
+  puts "".delimiter
+end

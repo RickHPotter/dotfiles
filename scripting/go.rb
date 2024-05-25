@@ -4,20 +4,24 @@ require_relative "util"
 
 module Scripting
   class Go < Scripting::Util
-    def self.run
-      new.run
+    attr_reader :file, :link
+
+    def initialize
+      @file = "go1.22.3.linux-amd64.tar.gz"
+      @link = "https://go.dev/dl/#{file}"
+      super
     end
 
     def run
-      file = "go1.22.3.linux-amd64.tar.gz"
-      link = "https://go.dev/dl/#{file}"
-      rm_rf("/usr/local/go")
+      puts "Installing Go...".start
+
+      rm_rf("/usr/local/go", sudo: true)
+
       download(link)
       bash("sudo tar -C /usr/local -xzf #{file}")
-
       rm_rf(file)
 
-      p "Go was successfully installed."
+      puts "Go was successfully installed.".end
     end
   end
 end
