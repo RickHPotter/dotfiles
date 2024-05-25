@@ -19,8 +19,8 @@ module Scripting
     end
 
     def install_postgres
-      bash("sudo apt-get update -y")
-      bash("sudo apt-get install -y postgresql postgresql-contrib")
+      bash("sudo apt-get update -qq")
+      bash("sudo apt-get install -qq postgresql postgresql-contrib")
       bash("sudo service postgresql start")
     end
 

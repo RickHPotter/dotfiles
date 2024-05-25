@@ -43,6 +43,7 @@ end
 Scripting::Nvim.run if options[:only_neovim]
 
 p "Things that are missing:"
+p "  - In Ubuntu Terminal Preferences, opt in `Run command as Login Shell` and add the custom command `zsh --login`"
 p "  - Setup Git Keys"
 p "  - Setup Codeium, runninig :Codeium Auth on nvim"
 p "  - Download Opera (personal) and Chrome (AndroidStudio and Capybara)"

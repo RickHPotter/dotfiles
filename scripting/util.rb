@@ -17,8 +17,8 @@ module Scripting
       @config_files_dir = File.join(root_dir, "config_files")
     end
 
-    def bash(command)
-      p "Running: #{command}"
+    def bash(command, custom_message: nil)
+      p "Running: #{custom_message || command}"
       stdout, stderr, status = Open3.capture3(command)
 
       unless status.success?
@@ -26,7 +26,7 @@ module Scripting
         exit 1
       end
 
-      p stdout
+      p stdout if stdout != ""
     end
 
     def bashs(*commands)

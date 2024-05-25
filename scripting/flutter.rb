@@ -18,10 +18,10 @@ module Scripting
     protected
 
     def install_dependencies
-      bash("sudo apt-get update -y && sudo apt-get upgrade -y")
-      bash("sudo apt-get install -y libglu1-mesa libc6:i386 libncurses5:i386 libstdc++6:i386 lib32z1 libbz2-1.0:i386")
-      bash("sudo apt-get install -y qemu-kvm libvirt-daemon-system libvirt-clients bridge-utils")
-      bash("sudo apt-get install -y clang ninja-build libgtk-3-dev -y")
+      bash("sudo apt-get update -qq && sudo apt-get upgrade -qq")
+      bash("sudo apt-get install -qq libglu1-mesa libc6:i386 libncurses5:i386 libstdc++6:i386 lib32z1 libbz2-1.0:i386")
+      bash("sudo apt-get install -qq qemu-kvm libvirt-daemon-system libvirt-clients bridge-utils")
+      bash("sudo apt-get install -qq clang ninja-build libgtk-3-dev")
     end
 
     def setup_flutter

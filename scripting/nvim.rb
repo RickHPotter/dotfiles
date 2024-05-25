@@ -41,7 +41,7 @@ module Scripting
     def setup_rust
       bash("rustup component add rust-analyzer")
       bash("sudo apt-get update")
-      bash("sudo apt-get install -y lldb")
+      bash("sudo apt-get install -qq lldb")
     end
   end
 end

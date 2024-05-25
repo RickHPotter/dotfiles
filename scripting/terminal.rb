@@ -15,6 +15,7 @@ module Scripting
       install_lazygit
       install_neovim
       install_fonts
+      install_exa
     end
 
     def install_oh_my_zsh
@@ -25,10 +26,6 @@ module Scripting
       cd("~/Downloads/ohmyzsh") do
         bash("./tools/install.sh -s -- --yes")
       end
-
-      zsh_config = "${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins"
-      git_clone("zsh-users/zsh-syntax-highlighting.git", "#{zsh_config}/zsh-syntax-highlighting")
-      git_clone("zsh-users/zsh-autosuggestions.git",     "#{zsh_config}/zsh-autosuggestions")
 
       rm_rf("~/Downloads/ohmyzsh")
 
@@ -86,9 +83,19 @@ module Scripting
 
       file_paths = Dir.glob(File.join(assets_dir, "fonts", "*.{ttf,otf}")).map { |path| Shellwords.escape(path) }.join(" ")
       cp(file_paths, fonts_dir, sudo: true)
-      bash("fc-cache -f -v")
+      bash("fc-cache -f")
 
       p "Fonts were successfully installed."
+    end
+
+    def install_exa
+      cd("/usr/local/bin") do
+        download("https://github.com/ogham/exa/releases/download/v0.10.0/exa-linux-x86_64-v0.10.0.zip", sudo: true)
+        bash("sudo unzip -o exa-linux-x86_64-v0.10.0.zip")
+        rm_rf("exa-linux-x86_64-v0.10.0.zip", sudo: true)
+      end
+
+      p "Exa was successfully installed."
     end
   end
 end
