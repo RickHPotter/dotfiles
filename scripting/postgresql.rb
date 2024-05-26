@@ -54,15 +54,14 @@ module Scripting
     def allow_password_authentication
       bash("sudo cp #{pg_hba_conf} #{pg_hba_conf_backup}")
 
-      Tempfile.open("pg_hba_conf") do |tempfile|
-        tempfile.puts `sudo cat #{pg_hba_conf}`
-        tempfile.puts "host    all             all             127.0.0.1/32            md5"
-        tempfile.puts "host    all             all             ::1/128                 md5"
-        tempfile.flush
+      current_user = `whoami`.strip
+      bash("sudo chown #{current_user} #{pg_hba_conf}")
 
-        mv(tempfile.path, pg_hba_conf, sudo: true)
-        tempfile.unlink
+      File.open(pg_hba_conf, "a") do |f|
+        f.puts "local   all             postgres                                peer"
       end
+
+      bash("sudo chown postgres #{pg_hba_conf}")
 
       bash("sudo service postgresql restart")
     end
