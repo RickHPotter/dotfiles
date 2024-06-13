@@ -2,7 +2,7 @@
 
 add_newline = false
 command_timeout = 1000
-format = """$os$username$hostname$directory$git_branch$git_status$ruby$elixir"""
+format = """$os$username$hostname$directory$git_branch$git_status$ruby$dart$gleam$elixir"""
 
 # Drop ugly default prompt characters
 [character]
@@ -74,18 +74,22 @@ deleted = '  '
 [docker_context]
 disabled = true
 
-[helm]
-disabled = true
-
-[elixir]
-format = 'via [ $version]($style) '
-disabled = false
-
-[nodejs]
-format = 'via [󱃾 $version](yellow) '
-disabled = false
-
 [ruby]
 symbol = ""
-format = 'with [$symbol $version]($style)(bold purple) '
-disabled = false
+format = 'with [$symbol $version]($style) '
+
+[dart]
+symbol = "🎯"
+format = 'and [$symbol $version]($style) '
+
+[nodejs]
+symbol = "󱃾"
+format = 'and [$symbol $version]($style) '
+
+[gleam]
+symbol = "✩"
+format = 'and [$symbol $version]($style) '
+
+[elixir]
+symbol = ""
+format = 'and [$symbol $version]($style) '
