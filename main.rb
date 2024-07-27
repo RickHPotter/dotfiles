@@ -54,6 +54,7 @@ if options[:only_neovim]
   - Download Opera (personal) and Chrome (AndroidStudio and Capybara)
   - Download Discord
   - Download Dbeaver
-  - Download Spotify".info1
+  - Download Spotify
+  - git clone https://github.com/Ld-Hagen/fix-opera-linux-ffmpeg-widevine.git".info1
   puts "".delimiter
 end
