@@ -71,3 +71,9 @@ module Scripting
     end
   end
 end
+
+# NVIM .10 hasnt been a good start for Ruby on Rails
+# Test one by one, maybe not all are necessary
+# gem pristine json --version 2.7.2
+# gem pristine racc --version 1.8.0
+# gem pristine strscan --version 3.1.0
