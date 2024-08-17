@@ -43,6 +43,7 @@ module Scripting
 
       bash("curl -sS https://starship.rs/install.sh | sh -s -- --yes > /dev/null")
 
+      mkdir_p("~/.config")
       cp(File.join(config_files_dir, "starship.toml"), "~/.config/starship.toml")
 
       puts "Tmux, plugins and Starship were successfully installed.".end

@@ -8,6 +8,7 @@ module Scripting
 
     def initialize
       @source_file = "~/.config/nvim"
+      mkdir_p(source_file)
       super
     end
 
