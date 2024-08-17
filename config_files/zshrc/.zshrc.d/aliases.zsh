@@ -1,4 +1,4 @@
-alias cat="batcat"
+alias bat="batcat"
 
 alias glg="git log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit"
 alias gcg="git config --edit --global"

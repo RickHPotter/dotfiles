@@ -50,6 +50,11 @@ if options[:only_neovim]
   puts "\
   - In Ubuntu Terminal Preferences, opt in `Run command as Login Shell` and add the custom command `zsh --login`
   - Setup Git Keys
+    - `ssh-keygen -t ed25519`
+    - `cat ~/.ssh/id_ed25519.pub`
+    - https://github.com/settings/ssh/new
+    - `git config --global user.name RickHPotter`
+    - `git config --global user.email luisfla55@hotmail.com`
   - Setup Codeium, runninig :Codeium Auth on nvim - https://www.codeium.com/profile?response_type=token&redirect_uri=vim-show-auth-token&state=a&scope=openid%20profile%20email&redirect_parameters_type=query
   - Download Opera (personal) and Chrome (AndroidStudio and Capybara)
   - Download Discord
