@@ -7,8 +7,8 @@ module Scripting
     def run
       puts "Installing Rust...".start
 
-      bash("curl -y --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -q -y")
-      bash("rustup -q default stable")
+      bash("curl https://sh.rustup.rs -sSf | sh -s -- -y")
+      bash("~/.cargo/bin/rustup -q default stable")
 
       puts "Rust was successfully installed.".end
     end

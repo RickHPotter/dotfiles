@@ -11,7 +11,7 @@ module Scripting
     def initialize
       @pg_user     = "postgres"
       @pg_password = "postgres"
-      @pg_hba_conf = File.expand_path("/etc/postgresql/12/main/pg_hba.conf")
+      @pg_hba_conf = File.expand_path("/etc/postgresql/16/main/pg_hba.conf")
       @pg_hba_conf_backup = File.expand_path("#{pg_hba_conf}.bak")
       super
     end
