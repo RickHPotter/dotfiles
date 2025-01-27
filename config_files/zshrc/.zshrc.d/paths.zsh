@@ -1,5 +1,6 @@
 export PATH=$PATH:~/nvim/bin/
 export PATH=$HOME/bin:$PATH
+export PATH=$HOME/.local/kitty.app/bin:$PATH
 
 export PATH=/usr/bin/lua:$PATH
 

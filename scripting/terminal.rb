@@ -6,8 +6,8 @@ require_relative "util"
 module Scripting
   class Terminal < Scripting::Util
     def run(options = {})
-      install_kitty if options[:kitty]
       install_oh_my_zsh
+      install_kitty if options[:kitty]
       install_tmux_and_plugins
       install_lazygit
       install_neovim
@@ -18,12 +18,6 @@ module Scripting
     end
 
     protected
-
-    def install_kitty
-      puts "Installing Kitty Terminal...".start
-
-      puts "Kitty was successfully installed.".end
-    end
 
     def install_oh_my_zsh
       puts "Installing OhMyZsh...".start
@@ -41,6 +35,16 @@ module Scripting
       bash("cshs -s $(which zsh)")
 
       puts "OhMyZsh was successfully installed.".end
+    end
+
+    def install_kitty
+      puts "Installing Kitty Terminal...".start
+
+      bash("curl -L https://sw.kovidgoyal.net/kitty/installer.sh | sh /dev/stdin")
+      mkdir_p("~/.config/kitty")
+      cp(File.join(config_files_dir, "kitty", "*"), "~/.config/kitty/")
+
+      puts "Kitty was successfully installed.".end
     end
 
     def install_tmux_and_plugins
@@ -123,12 +127,19 @@ module Scripting
     def setup_git
       puts "Setting up Git...".start
 
-      # - Setup Git Keys
-      #   - `ssh-keygen -t ed25519`
-      #   - `cat ~/.ssh/id_ed25519.pub`
-      #   - https://github.com/settings/ssh/new
-      #   - `git config --global user.name RickHPotter`
-      #   - `git config --global user.email luisfla55@hotmail.com`
+      bash("ssh-keygen -t rsa -N '' -f ~/.ssh/id_rsa")
+      puts "Copy the public key below:".yellow
+      bash("cat ~/.ssh/id_rsa.pub")
+      puts "Paste the public key here:".yellow
+      puts "https://github.com/settings/ssh/new".blue
+      gets "Give me your GitHub username: " do |username|
+        bash("git config --global user.name #{username}")
+      end
+      gets "Give me your GitHub email: " do |email|
+        bash("git config --global user.email #{email}")
+      end
+
+      puts "Git was successfully setup.".end
     end
   end
 end

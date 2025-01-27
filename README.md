@@ -23,12 +23,25 @@ Open your terminal and navigate to the directory containing your scripts. Then, 
 
 ```bash
 chmod +x 01.\ sh_environment.sh
-chmod +x 02.\ rb_environment.sh
 ```
 
 Then, run the following commands to execute the scripts:
 
 ```bash
-./01.\ sh_environment.sh
-./02.\ rb_environment.sh
+source ~/.bashrc
+ruby main.rb --except-neovim [--no-postgres --no-oracle --no-flutter no-kitty --no-fonts --no-git]
+ruby main.rb --only-neovim
+
+source ~/.bashrc
+
+# MAKE kitty default
+sudo update-alternatives --install /usr/bin/x-terminal-emulator x-terminal-emulator $(which kitty) 50
+update-alternatives --display x-terminal-emulator # check
+gsettings set org.gnome.desktop.default-applications.terminal exec $(which kitty)
+gsettings get org.gnome.desktop.default-applications.terminal exec # check
+# CTRL+ALT+T now opens Kitty instead of the default terminal
+
+cshs $(which zsh) # might be necessary
+t_fin
+CTRL + A + I # install tmux plugins
 ```
