@@ -17,7 +17,7 @@ require_relative "scripting/rust"
 require_relative "scripting/zshrc"
 require_relative "scripting/nvim"
 
-options = { except_neovim: false, only_neovim: false }
+options = { except_neovim: false, only_neovim: false, postgres: true, oracle: true, flutter: true }
 
 OptionParser.new do |opts|
   opts.on("--except-neovim", "Except Neovim // DEFAULT") do
@@ -27,18 +27,29 @@ OptionParser.new do |opts|
   opts.on("--only-neovim", "Only Neovim") do
     options[:only_neovim] = true
   end
+
+  opts.on("--no-postgres", "Except Postgres") do
+    options[:postgres] = false
+  end
+
+  opts.on("--no-oracle", "Except Oracle") do
+    options[:oracle] = false
+  end
+
+  opts.on("--no-flutter", "Except Flutter") do
+    options[:flutter] = false
+  end
 end.parse!
 
 if options[:except_neovim]
   Scripting::Terminal.run
   Scripting::Touchcursor.run
-  Scripting::Postgresql.run
-  Scripting::Oracle.run
-
   Scripting::Nvm.run
   Scripting::Go.run
-  Scripting::Flutter.run
   Scripting::Rust.run
+  Scripting::Postgresql.run if options[:postgres]
+  Scripting::Oracle.run     if options[:oracle]
+  Scripting::Flutter.run    if options[:flutter]
   Scripting::Zshrc.run
 end
 
