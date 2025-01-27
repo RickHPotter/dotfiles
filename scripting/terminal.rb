@@ -5,16 +5,25 @@ require_relative "util"
 
 module Scripting
   class Terminal < Scripting::Util
-    def run
+    def run(options = {})
+      install_kitty if options[:kitty]
       install_oh_my_zsh
       install_tmux_and_plugins
       install_lazygit
       install_neovim
-      install_fonts
+      install_fonts if options[:fonts]
       install_exa
+
+      setup_git if options[:git]
     end
 
     protected
+
+    def install_kitty
+      puts "Installing Kitty Terminal...".start
+
+      puts "Kitty was successfully installed.".end
+    end
 
     def install_oh_my_zsh
       puts "Installing OhMyZsh...".start
@@ -28,6 +37,8 @@ module Scripting
       end
 
       rm_rf("~/Downloads/ohmyzsh")
+
+      bash("cshs -s $(which zsh)")
 
       puts "OhMyZsh was successfully installed.".end
     end
@@ -107,6 +118,17 @@ module Scripting
       end
 
       puts "Exa was successfully installed.".end
+    end
+
+    def setup_git
+      puts "Setting up Git...".start
+
+      # - Setup Git Keys
+      #   - `ssh-keygen -t ed25519`
+      #   - `cat ~/.ssh/id_ed25519.pub`
+      #   - https://github.com/settings/ssh/new
+      #   - `git config --global user.name RickHPotter`
+      #   - `git config --global user.email luisfla55@hotmail.com`
     end
   end
 end
