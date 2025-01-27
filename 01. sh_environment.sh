@@ -55,11 +55,12 @@ install_rvm() {
 }
 
 install_rubies() {
-	run_command "rvm install 3.2.0"
-	run_command "rvm use --default 3.2.0"
+	run_command "rvm autolibs enable"
+	run_command "rvm install 3.4.1"
+	run_command "rvm use --default 3.4.1"
 	run_command "rvm docs generate"
 
-	read -p "Enter Ruby versions to install (comma separated) other than default 3.2.0: " ruby_versions
+	read -p "Enter Ruby versions to install (comma separated) other than default 3.4.1: " ruby_versions
 
 	IFS=',' read -r -a versions <<<"$ruby_versions"
 	for version in "${versions[@]}"; do
