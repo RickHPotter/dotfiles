@@ -24,7 +24,7 @@ run_command() {
 }
 
 install_packages() {
-	run_command "sudo apt-get update -qq && sudo apt-get install -qq autoconf automake bat bison build-essential cmake curl fzf g++ gawk git gpg graphviz imagemagick libaio-dev libbz2-dev libcurl4-openssl-dev libevent-dev libffi-dev libgdbm-dev libglib2.0-dev libgmp-dev libgraphicsmagick1-dev libjpeg-dev libmagickcore-dev libmagickwand-dev libncurses-dev libncurses5-dev libpq-dev libreadline-dev libsqlite3-dev libssl-dev libxml2-dev libxslt-dev libyaml-dev make openconnect patch ripgrep redis-server sshuttle sqlite3 tmux unzip wget xclip xdg-utils zlib1g-dev zsh"
+	run_command "sudo apt-get update -qq && sudo apt-get install -qq autoconf automake bat bison build-essential cmake curl chromium-chromedriver fzf g++ gawk git gpg graphviz imagemagick libaio-dev libbz2-dev libcurl4-openssl-dev libevent-dev libffi-dev libgdbm-dev libglib2.0-dev libgmp-dev libgraphicsmagick1-dev libjpeg-dev libmagickcore-dev libmagickwand-dev libncurses-dev libncurses5-dev libpq-dev libreadline-dev libsqlite3-dev libssl-dev libxml2-dev libxslt-dev libyaml-dev make openconnect patch ripgrep redis-server sshuttle sqlite3 tmux unzip wget xclip xdg-utils zlib1g-dev zsh"
 	run_command "sudo apt-get clean"
 
 	echo -e "${SUCCESS}Packages installed successfully.${RESET}"

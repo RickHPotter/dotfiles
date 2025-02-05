@@ -2,7 +2,7 @@
 
 add_newline = false
 command_timeout = 1000
-format = """$os$username$hostname$directory$git_branch$git_status$ruby$dart$gleam$elixir"""
+format = """$os$username$hostname$directory$git_branch$git_status$ruby$nodejs$elixir$dart"""
 
 # Drop ugly default prompt characters
 [character]
