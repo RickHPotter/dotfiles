@@ -41,7 +41,7 @@ gsettings set org.gnome.desktop.default-applications.terminal exec $(which kitty
 gsettings get org.gnome.desktop.default-applications.terminal exec # check
 # CTRL+ALT+T now opens Kitty instead of the default terminal
 
-cshs $(which zsh) # might be necessary
+chsh $(which zsh) # might be necessary
 t_fin
 CTRL + A + I # install tmux plugins
 ```

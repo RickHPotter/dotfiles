@@ -5,6 +5,10 @@ require_relative "util"
 
 module Scripting
   class Terminal < Scripting::Util
+    def self.run(options = {})
+      new.run(options)
+    end
+
     def run(options = {})
       install_oh_my_zsh
       install_kitty if options[:kitty]
@@ -32,7 +36,7 @@ module Scripting
 
       rm_rf("~/Downloads/ohmyzsh")
 
-      bash("cshs -s $(which zsh)")
+      bash("chsh -s $(which zsh)")
 
       puts "OhMyZsh was successfully installed.".end
     end
@@ -88,13 +92,13 @@ module Scripting
       rm_rf("~/nvim")
 
       cd("~/Downloads") do
-        download("https://github.com/neovim/neovim/releases/download/stable/nvim-linux64.tar.gz")
-        bash("tar -xf nvim-linux64.tar.gz")
-        mv("nvim-linux64", "~/nvim", sudo: true)
+        download("https://github.com/neovim/neovim/releases/latest/download/nvim-linux-x86_64.tar.gz")
+        bash("tar -xf nvim-linux-x86_64.tar.gz")
+        mv("nvim-linux-x86_64", "~/nvim", sudo: true)
       end
 
-      rm_rf("~/Downloads/nvim-linux64")
-      rm_rf("~/Downloads/nvim-linux64.tar.gz")
+      rm_rf("~/Downloads/nvim-linux-x86_64")
+      rm_rf("~/Downloads/nvim-linux-x86_64.tar.gz")
 
       puts "Neovim was successfully installed.".end
     end
