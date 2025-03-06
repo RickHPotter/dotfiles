@@ -48,6 +48,17 @@ module Scripting
       mkdir_p("~/.config/kitty")
       cp(File.join(config_files_dir, "kitty", "*"), "~/.config/kitty/")
 
+      # cd /usr/lib/
+      # sudo mkdir kitty
+      # cd kitty
+      # sudo mkdir logo
+      # cd logo
+      # sudo wget https://github.com/k0nserv/kitty-icon/blob/main/build/neue_ember.iconset/icon_128x128.png
+      # sudo mv icon_128x128.png kitty-128.png
+      # sudo rm -rf kitty.png
+      # sudo wget https://github.com/k0nserv/kitty-icon/blob/main/build/neue_ember.iconset/icon_32x32.png
+      # sudo mv icon_32x32.png kitty.png
+
       puts "Kitty was successfully installed.".end
     end
 
