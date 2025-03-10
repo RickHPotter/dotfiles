@@ -7,10 +7,10 @@ module Scripting
     attr_reader :flutter_file, :flutter_link, :android_file, :android_link
 
     def initialize
-      @flutter_file = "flutter_linux_3.22.1-stable.tar.xz"
+      @flutter_file = "flutter_linux_3.29.1-stable.tar.xz"
       @flutter_link = "https://storage.googleapis.com/flutter_infra_release/releases/stable/linux/#{flutter_file}"
-      @android_file = "android-studio-2023.3.1.19-linux.tar.gz"
-      @android_link = "https://redirector.gvt1.com/edgedl/android/studio/ide-zips/2023.3.1.19/#{android_file}"
+      @android_file = "android-studio-2024.3.1.13-linux.tar.gz"
+      @android_link = "https://redirector.gvt1.com/edgedl/android/studio/ide-zips/2024.3.1.13/#{android_file}"
       super
     end
 
@@ -40,7 +40,7 @@ module Scripting
       rm_rf("/usr/bin/flutter", sudo: true)
 
       download(flutter_link)
-      bash("sudo tar -xf #{flutter_file} -C /usr/bin/")
+      bash("tar -xf #{flutter_file} -C $HOME/development")
       bash("echo 'export PATH=\"$HOME/development/flutter/bin:$PATH\"' >> ~/.zshenv")
 
       rm_rf(flutter_file)

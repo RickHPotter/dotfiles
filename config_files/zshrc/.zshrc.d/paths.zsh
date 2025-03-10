@@ -12,7 +12,10 @@ export PATH=/usr/local/go/bin:$PATH
 export PATH=$PATH:/usr/local/bin/exa/bin
 
 export PATH=/usr/bin/android-studio/bin:$PATH
-export PATH=/usr/bin/flutter/bin:$PATH
+export PATH=$HOME/development/flutter/bin:$PATH
+
+CHROME_EXECUTABLE=/snap/bin/chromium
+export CHROME_EXECUTABLE
 
 . "$HOME/.cargo/env"
 
